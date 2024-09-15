@@ -1,0 +1,39 @@
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+dbr:Mafia_III  rdf:type  rdf:Type;
+               dbr:description  "Mafia III is a 2016 action-adventure video game developed by Hangar 13 and published by 2K Games. It was released in October 2016 for PlayStation 4, Xbox One, and Windows, in May 2017 for macOS, and in October 2021 for Google Stadia. It is the sequel to Mafia II and the third installment in the Mafia series. Set within the fictional city of New Bordeaux (based on New Orleans) in 1968, the story follows former criminal and Vietnam veteran Lincoln Clay, who is forced to return to a life of crime to help his adoptive family settle problems with the local branch of the Mafia. After the Mafia betray and murder his family, Lincoln embarks on a quest for revenge while slowly building a criminal empire and seizing power from other criminal organisations in the city. The development of Mafia III began soon after Mafia II's release, but initially had problems. 2K Czech, the developer of the series' first installments, oversaw restructure, with much of the development team assigned to the company's new studio, Hangar 13. After deciding on recreating New Orleans in 1968, the development team drew influence from the series' previous projects, and designed the game around Clay to replicate the core structure of its predecessors. Much of the development work constituted the open world's creation, and several team members conducted field research around Louisiana to capture footage for the design team. The game's soundtrack features several licensed songs composed by various musicians who were active during the time period. Upon release, the game received mixed reviews, with praise directed at its story, characters, darker themes, and soundtrack. However, some of the gameplay mechanics and the presence of technical issues drew criticism. The game was a commercial success, selling seven million copies worldwide. On May 19, 2020, to coincide with the remake of the first Mafia game, 2K Games released a version of Mafia III comprised with all downloadable content packs titled Mafia III: Definitive Edition. This Definitive Edition was later included in the Mafia: Trilogy pack, released on September 25, 2020."@en;
+               dbr:director     dbr:Haden_Blackman;
+               dbr:genre        dbr:Action-adventure;
+               dbr:name         "Mafia III"@en;
+               dbr:releaseYear  "2016-10-07"^^xsd:date , "2021-10-01"^^xsd:date .
+
+dbr:Descendants_2  rdf:type  rdf:Type;
+                   dbr:description  "Descendants 2 is an American musical fantasy television film. It premiered as a Disney Channel Original Movie on July 21, 2017, and was simulcast on Disney-owned networks ABC, Disney XD, Freeform, Lifetime, and Lifetime Movies. It is the second installment in the Descendants franchise and the sequel to the 2015 film Descendants. The film stars Dove Cameron, Cameron Boyce, Sofia Carson, Booboo Stewart, Mitchell Hope, and China Anne McClain. A third film, Descendants 3, premiered on August 2, 2019."@en;
+                   dbr:director     dbr:Kenny_Ortega;
+                   dbr:genre        dbr:Fantasy_film , dbr:Teen_film , dbr:Musical_film;
+                   dbr:name         "Descendants 2"@en;
+                   dbr:releaseYear  "2017-07-21"^^xsd:date .
+
+dbr:Dil_Banjaara  rdf:type  rdf:Type;
+                  dbr:description  "Dil Banjaara (Urdu: دل بنجارا lit: Wander Heart), previously entitled Gypsy is a Pakistani drama serial that was aired on Hum TV on 14 October 2016, preceded by Jhoot for 2016 Television season. It is directed by Siraj-ul-Haque, written by Faiza Iftikhar and produced by Momina Duraid as a night programming all under her production company MD Productions. It stars Adnan Malik as Sikandar an aspiring photographer along with Sanam Saeed as female lead and Mira Sethi as supporting character."@en;
+                  dbr:director     dbr:Siraj-ul-Haque;
+                  dbr:genre        dbr:Romance_film , dbr:Family_Drama;
+                  dbr:name         "Dil Banjaara"@en;
+                  dbr:releaseYear  "2016-10-14"^^xsd:date .
+
+dbr:Kamen_Rider_Ex-Aid
+    rdf:type         rdf:Type;
+    dbr:description  "Kamen Rider Ex-Aid (仮面ライダーエグゼイド, Kamen Raidā Eguzeido) is a Japanese tokusatsu drama in Toei Company's Kamen Rider Series. It is the eighteenth series in the Heisei period run and the twenty-seventh series overall. Toei registered the Kamen Rider Ex-Aid trademark on June 13, 2016. The show premiered on October 2, 2016, one week after the finale of Kamen Rider Ghost, joining Doubutsu Sentai Zyuohger and later, Uchu Sentai Kyuranger in the Super Hero Time line-up."@en;
+    dbr:director     dbr:Shojiro_Nakazawa , dbr:Koichi_Sakamoto;
+    dbr:genre        dbr:Cyberpunk , dbr:Comedy_drama , dbr:Superhero_fiction , dbr:Medical_drama , dbr:Action_film , dbr:Tokusatsu , dbr:Science_fiction;
+    dbr:name         "Kamen Rider Ex-Aid"@en;
+    dbr:releaseYear  "2016-10-02"^^xsd:date .
+
+dbr:Hairspray_Live  rdf:type  rdf:Type;
+                    dbr:description  "Hairspray Live! is an American television special that aired live on the American television network NBC on December 7, 2016. Produced by Craig Zadan and Neil Meron, and hosted by Darren Criss, it is a performance of a new adaptation of the 2002 Broadway musical Hairspray."@en;
+                    dbr:director     dbr:Kenny_Leon;
+                    dbr:genre        dbr:Musical_film , dbr:Live_television , dbr:Romantic_comedy;
+                    dbr:name         "Hairspray Live!"@en;
+                    dbr:releaseYear  "2016-12-07"^^xsd:date .
