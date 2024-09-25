@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies List</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    /* Styling the navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      padding: 14px 16px;
+      margin-bottom: 50px;
+    }
+    .navbar .title {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 14px 16px;
+    }
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    /* Styling the filter section */
+    .filter-section {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation bar -->
+<div class="navbar">
+  <div class="title">Movies List</div>
+  <div>
+    <a href="/movies-home">Home</a>
+    <a href="/watchLater">Watch Later</a>
+    <a href="#">Already Watched</a>
+    <a href="/favourites">Favourite Movies</a>
+  </div>
+</div>
+
+
+</body>
+</html>

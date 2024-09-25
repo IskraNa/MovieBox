@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies List</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    /* Styling the navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      padding: 14px 16px;
+      margin-bottom: 50px;
+    }
+    .navbar .title {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 14px 16px;
+    }
+    .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    /* Styling the filter section */
+    .filter-section {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation bar -->
+<div class="navbar">
+  <div class="title">Movies List</div>
+  <div>
+    <a href="#">Home</a>
+    <a href="/watchLater">Watch Later</a>
+    <a href="/alreadyWatched">Already Watched</a>
+    <a href="/favourites">Favourite Movies</a>
+  </div>
+</div>
+
+<!-- Filter Section -->
+<div class="filter-section">
+  <form method="GET" action="/movies-home">
+    <!-- Filter by name -->
+    <label for="name">Filter by name:</label>
+    <input type="text" id="name" name="name" placeholder="Enter movie name"
+            th:value="${movie?.name}">
+
+    <!-- Filter by genre -->
+    <label for="genre">Filter by genre:</label>
+    <select id="genre" name="genre">
+      <option value="">All genres</option>
+      <option value="romance">Romance</option>
+      <option value="horror">Horror</option>
+    </select>
+
+    <!-- Submit button -->
+    <button type="submit">Filter</button>
+  </form>
+</div>
+
+<!-- Movies Table -->
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th style="width: 50%">Description</th>
+    <th>Genre</th>
+    <th>Release Year</th>
+    <th>Director</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="movie : ${movies}">
+    <td th:text="${movie.name}">Name</td>
+    <td th:text="${movie.description}">Description</td>
+    <td>
+      <ul>
+        <li th:each="genre : ${movie.genres}" th:text="${genre}">Genre</li>
+      </ul>
+    </td>
+    <td th:text="${movie.releaseYear}">Release Year</td>
+    <td th:text="${movie.director}">Director</td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

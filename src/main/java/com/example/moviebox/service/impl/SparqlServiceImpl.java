@@ -18,6 +18,7 @@ import java.util.Map;
 @Service
 public class SparqlServiceImpl implements SparqlService {
 
+    private static final String SPARQL_ENDPOINT = "http://localhost:3030/movie-box/sparql";
     private final MovieRepository movieRepository;
 
     public SparqlServiceImpl(MovieRepository movieRepository) {
@@ -48,10 +49,36 @@ public class SparqlServiceImpl implements SparqlService {
         return executeQuery(queryString, model);
     }
 
+    public List<Movie> queryMoviesByName(String name) {
+
+        String queryString = """
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    PREFIX dbr: <http://dbpedia.org/resource/>
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    
+                    SELECT DISTINCT ?movie ?name ?releaseYear ?genre ?director ?description
+                    WHERE {
+                    ?movie a rdf:Type ;
+                          dbr:name ?name ;                 
+                          dbr:genre ?genre ;
+                          dbr:releaseYear ?releaseYear ;  
+                          dbr:description ?description ;                         
+                          dbr:director ?director .
+                          FILTER(CONTAINS(LCASE(?name), LCASE("%s")))
+                    }
+                """.formatted(name);
+
+        Model model = ModelFactory.createDefaultModel();
+        String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
+        FileManager.get().readModel(model, filePath, "TTL");
+
+        return executeQuery(queryString, model);
+    }
+
     private List<Movie> executeQuery(String queryString, Model model) {
         Map<Long, Movie> moviesMap = new HashMap<>();
         Query query = QueryFactory.create(queryString);
-        try (QueryExecution qe = QueryExecutionFactory.create(query, model)) {
+        try (QueryExecution qe = QueryExecutionFactory.sparqlService(SPARQL_ENDPOINT, query)) {
             ResultSet results = qe.execSelect();
             while (results.hasNext()) {
                 QuerySolution solution = results.nextSolution();
