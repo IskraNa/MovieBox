@@ -37,3 +37,4 @@ dbr:Hairspray_Live  rdf:type  rdf:Type;
                     dbr:genre        dbr:Musical_film , dbr:Live_television , dbr:Romantic_comedy;
                     dbr:name         "Hairspray Live!"@en;
                     dbr:releaseYear  "2016-12-07"^^xsd:date .
+

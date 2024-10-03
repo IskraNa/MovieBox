@@ -2,64 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Movies List</title>
+  <title>MovieBox</title>
   <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
     }
-    table, th, td {
-      border: 1px solid black;
-    }
-    th, td {
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    /* Styling the navigation bar */
+
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #333;
+      background-color: #343a40;
       padding: 14px 16px;
-      margin-bottom: 50px;
     }
+
     .navbar .title {
       color: white;
       font-size: 24px;
       font-weight: bold;
     }
+
     .navbar a {
       color: white;
       text-decoration: none;
       padding: 14px 16px;
     }
+
     .navbar a:hover {
-      background-color: #ddd;
-      color: black;
-    }
-    /* Styling the filter section */
-    .filter-section {
-      margin-bottom: 20px;
+      background-color: #17a2b8;
+      color: white;
     }
   </style>
 </head>
 <body>
 
-<!-- Navigation bar -->
 <div class="navbar">
-  <div class="title">Movies List</div>
+  <div class="title">MovieBox</div>
   <div>
-    <a href="/movies-home">Home</a>
+    <a href="/movies">Home</a>
     <a href="#">Watch Later</a>
     <a href="/alreadyWatched">Already Watched</a>
     <a href="/favourites">Favourite Movies</a>
   </div>
 </div>
+<h1>Watch Later List</h1>
+<ul>
+  <th:block th:if="${#lists.isEmpty(watchLaterMovies)}">
+    <li>No movies in your watch later list.</li>
+  </th:block>
+  <th:block th:each="movie : ${watchLaterMovies}">
+    <li>
+      <div th:text="${movie.name}">Movie Name</div>
 
+      <form th:action="@{/movies/watched/add}" method="post">
+        <input type="hidden" name="id" th:value="${movie.id}" />
+        <button type="submit">Mark as Watched</button>
+      </form>
+    </li>
+  </th:block>
+</ul>
 
 </body>
 </html>

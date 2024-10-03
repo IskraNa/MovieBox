@@ -7,7 +7,6 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.util.FileManager;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,8 +42,8 @@ public class SparqlServiceImpl implements SparqlService {
                     }
                 """;
         Model model = ModelFactory.createDefaultModel();
-        String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
-        FileManager.get().readModel(model, filePath, "TTL");
+        //String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
+        //FileManager.get().readModel(model, filePath, "TTL");
 
         return executeQuery(queryString, model);
     }
@@ -69,8 +68,71 @@ public class SparqlServiceImpl implements SparqlService {
                 """.formatted(name);
 
         Model model = ModelFactory.createDefaultModel();
-        String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
-        FileManager.get().readModel(model, filePath, "TTL");
+        //String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
+        //FileManager.get().readModel(model, filePath, "TTL");
+
+        return executeQuery(queryString, model);
+    }
+
+    public List<Movie> queryMoviesByGenre(String genre) {
+
+        String queryString = """
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    PREFIX dbr: <http://dbpedia.org/resource/>
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    
+                    SELECT DISTINCT ?movie ?name ?releaseYear ?genre ?director ?description
+                    WHERE {
+                    ?movie a rdf:Type ;
+                          dbr:name ?name ;                 
+                          dbr:genre ?genre ;
+                          dbr:releaseYear ?releaseYear ;  
+                          dbr:description ?description ;                         
+                          dbr:director ?director .
+                          FILTER(CONTAINS(LCASE(?genre), LCASE("%s")))
+                    }
+                """.formatted(genre);
+
+        Model model = ModelFactory.createDefaultModel();
+        //String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
+        //FileManager.get().readModel(model, filePath, "TTL");
+
+        return executeQuery(queryString, model);
+    }
+
+    public List<Movie> queryMoviesByNameAndGenre(String name, String genre) {
+
+        String queryString = """
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX dbr: <http://dbpedia.org/resource/>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+            SELECT DISTINCT ?movie ?name ?releaseYear ?genre ?director ?description
+            WHERE {
+                ?movie a rdf:Type ;
+                       dbr:name ?name ;                 
+                       dbr:genre ?genre ;
+                       dbr:releaseYear ?releaseYear ;  
+                       dbr:description ?description ;                         
+                       dbr:director ?director .
+
+                FILTER(CONTAINS(LCASE(?name), LCASE("%s")))
+    """.formatted(name);
+
+        if (genre != null && !genre.isEmpty()) {
+            queryString += """
+            FILTER(EXISTS {
+                ?movie dbr:genre ?g .
+                FILTER(CONTAINS(LCASE(STR(?g)), LCASE("%s")))
+            })
+        """.formatted(genre);
+        }
+
+        queryString += "}";
+
+        Model model = ModelFactory.createDefaultModel();
+        //String filePath = "src/main/java/com/example/moviebox/movie-data.ttl";
+        //FileManager.get().readModel(model, filePath, "TTL");
 
         return executeQuery(queryString, model);
     }
@@ -118,13 +180,13 @@ public class SparqlServiceImpl implements SparqlService {
 
                 }
 
-                System.out.printf("Movie: %s, Name: %s, Release Year: %s, Genre: %s, Director: %s, Description: %s%n",
-                        existingMovie != null ? existingMovie : "New Movie",
-                        movieName,
-                        handleValue(solution, "releaseYear"),
-                        genre,
-                        handleValue(solution, "director"),
-                        handleValue(solution, "description"));
+//                System.out.printf("Movie: %s, Name: %s, Release Year: %s, Genre: %s, Director: %s, Description: %s%n",
+//                        existingMovie != null ? existingMovie : "New Movie",
+//                        movieName,
+//                        handleValue(solution, "releaseYear"),
+//                        genre,
+//                        handleValue(solution, "director"),
+//                        handleValue(solution, "description"));
             }
         } catch (QueryParseException e) {
             System.err.println("Query parse error: " + e.getMessage());
@@ -141,9 +203,9 @@ public class SparqlServiceImpl implements SparqlService {
             if (solution.contains(varName)) {
                 RDFNode node = solution.get(varName);
                 if (node.isLiteral()) {
-                    return node.asLiteral().getString();
+                    return node.asLiteral().getString().replace('_', ' ');
                 } else if (node.isResource()) {
-                    return node.asResource().getLocalName();
+                    return node.asResource().getLocalName().replace('_', ' ');
                 } else {
                     return "Unknown Type";
                 }

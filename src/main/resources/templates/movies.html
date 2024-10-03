@@ -2,110 +2,239 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Movies List</title>
+    <title>MovieBox</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        /* Styling the navigation bar */
+
         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #333;
+            background-color: #343a40;
             padding: 14px 16px;
-            margin-bottom: 50px;
         }
+
         .navbar .title {
             color: white;
             font-size: 24px;
             font-weight: bold;
         }
+
         .navbar a {
             color: white;
             text-decoration: none;
             padding: 14px 16px;
         }
+
         .navbar a:hover {
-            background-color: #ddd;
-            color: black;
+            background-color: #17a2b8;
+            color: white;
         }
-        /* Styling the filter section */
+
         .filter-section {
             margin-bottom: 20px;
+            background-color: #17a2b8;
+            padding: 10px;
         }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        input, select {
+            margin-right: 10px;
+            padding: 6px;
+        }
+
+        button {
+            padding: 6px 12px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5a6268;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .movie-card {
+            background-color: #e9ecef;
+            flex: 1 1 300px;
+            max-width: 400px;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: justify;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-body {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .genre-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            font-size: 0.9rem;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .genre-list li {
+            margin-right: 8px;
+            background-color: #f0f0f0;
+            padding: 5px 8px;
+            border-radius: 4px;
+        }
+
+        h5 {
+            font-size: calc(1rem + 1vw);
+        }
+
+        p {
+            font-size: calc(0.7rem + 0.4vw);
+        }
+
+        .navbar, button {
+            background-color: #343a40;
+        }
+
+        .navbar a:hover, button:hover {
+            background-color: #17a2b8;
+        }
+
+        .movie-card:nth-child(even) {
+            background-color: #ffe8e8;
+        }
+
+        .movie-card:nth-child(odd) {
+            background-color: #e8f8ff;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .genres{
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
 
-<!-- Navigation bar -->
 <div class="navbar">
-    <div class="title">Movies List</div>
+    <div class="title">MovieBox</div>
     <div>
-        <a href="#">Home</a>
+        <a href="/movies">Home</a>
         <a href="/watchLater">Watch Later</a>
         <a href="/alreadyWatched">Already Watched</a>
         <a href="/favourites">Favourite Movies</a>
     </div>
 </div>
 
-<!-- Filter Section -->
-<div class="filter-section">
-    <form method="GET" action="/movies/name">
-        <!-- Filter by name -->
-        <label for="name">Filter by name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter movie name"
-               th:value="${movie?.name}">
+<div class="container">
+    <div class="filter-section">
+        <form method="GET" action="/movies/filter">
+            <label for="name">Filter by name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter movie name"
+                   th:value="${param.name}">
 
-        <!-- Filter by genre -->
-        <label for="genre">Filter by genre:</label>
-        <select id="genre" name="genre">
-            <option value="">All genres</option>
-            <option value="romance">Romance</option>
-            <option value="horror">Horror</option>
-        </select>
+            <label for="genre">Filter by genre:</label>
+            <select id="genre" name="genre">
+                <option value="">All genres</option>
+                <option value="romance" th:selected="${param.genre == 'romance'}">Romance</option>
+                <option value="horror" th:selected="${param.genre == 'horror'}">Horror</option>
+                <option value="fantasy" th:selected="${param.genre == 'fantasy'}">Fantasy</option>
+                <option value="comedy" th:selected="${param.genre == 'comedy'}">Comedy</option>
+                <option value="crime" th:selected="${param.genre == 'crime'}">Crime</option>
+                <option value="thriller" th:selected="${param.genre == 'thriller'}">Thriller</option>
+                <option value="superhero" th:selected="${param.genre == 'superhero'}">Superhero fiction</option>
+                <option value="action" th:selected="${param.genre == 'action'}">Action-adventure</option>
+                <option value="drama" th:selected="${param.genre == 'drama'}">Drama</option>
+                <option value="science" th:selected="${param.genre == 'science'}">Sci-Fi</option>
+                <option value="teen" th:selected="${param.genre == 'teen'}">Teen</option>
+                <option value="family" th:selected="${param.genre == 'family'}">Family drama</option>
+                <option value="medical" th:selected="${param.genre == 'medical'}">Medical</option>
+                <option value="historical" th:selected="${param.genre == 'historical'}">Historical</option>
+                <option value="musical" th:selected="${param.genre == 'musical'}">Musical</option>
+                <option value="live" th:selected="${param.genre == 'live'}">Live television</option>
+            </select>
 
-        <!-- Submit button -->
-        <button type="submit">Filter</button>
-    </form>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+
+    <div class="card-container">
+        <div class="movie-card" th:each="movie : ${movies}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${movie.name}">Movie Name</h5>
+                <p class="card-text" th:text="${movie.description}">Movie description...</p>
+               <div class="genres"><p><strong>Genre(s):</strong></p>
+                <ul class="genre-list">
+                    <li th:each="genre : ${movie.genres}" th:text="${genre}">Genre</li>
+                </ul></div>
+                <p><strong>Release Year:</strong> <span th:text="${movie.releaseYear}">Year</span></p>
+                <p><strong>Director:</strong> <span th:text="${movie.director}">Director Name</span></p>
+
+                <form th:action="@{/movies/watchlist/add}" method="post">
+                    <input type="hidden" th:value="${movie.id}" name="id"/>
+                    <button type="submit">Add to Watch Later</button>
+                </form>
+
+                <form th:action="@{/movies/favorites/add}" method="post">
+                    <input type="hidden" th:value="${movie.id}" name="id"/>
+                    <button type="submit">Add to Favourites</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Movies Table -->
-<table>
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th style="width: 50%">Description</th>
-        <th>Genre</th>
-        <th>Release Year</th>
-        <th>Director</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="movie : ${movies}">
-        <td th:text="${movie.name}">Name</td>
-        <td th:text="${movie.description}">Description</td>
-        <td>
-            <ul>
-                <li th:each="genre : ${movie.genres}" th:text="${genre}">Genre</li>
-            </ul>
-        </td>
-        <td th:text="${movie.releaseYear}">Release Year</td>
-        <td th:text="${movie.director}">Director</td>
-    </tr>
-    </tbody>
-</table>
+<footer>
+    <p>&copy; 2024 MovieBox | All Rights Reserved</p>
+</footer>
 
 </body>
 </html>

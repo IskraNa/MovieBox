@@ -24,29 +24,40 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getAllMovies() {
-        return null; //here will be the query
+        return null;
+    }
+
+    @Override
+    public Movie findById(Long id) {
+        return movieRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid movie ID"));
     }
 
     public Movie addMovie(Movie movie) {
         return movieRepository.save(movie);
     }
 
+    @Override
     public void addToWatchlist(Movie movie) {
         if (!watchlist.contains(movie)) {
             watchlist.add(movie);
         }
     }
 
+    @Override
     public void markAsWatched(Movie movie) {
         if (watchlist.contains(movie)) {
             watchlist.remove(movie);
-            alreadyWatched.add(movie);
+            if (!alreadyWatched.contains(movie)) {
+                alreadyWatched.add(movie);
+            }
         }
     }
 
+    @Override
     public void addToFavorites(Movie movie) {
         if (!favorites.contains(movie)) {
             favorites.add(movie);
+
         }
     }
 

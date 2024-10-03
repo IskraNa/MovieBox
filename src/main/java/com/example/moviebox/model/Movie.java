@@ -27,6 +27,9 @@ public class Movie {
 
     //private String image;
 
+    private boolean isWatchLater;
+    private boolean isAlreadyWatched;
+    private boolean isFavourite;
 
     public Movie(String director, String description, String genres, String name, String releaseYear) {
         this.name = name;

@@ -30,76 +30,85 @@ public class MovieController {
         return "movies";
     }
 
-    @GetMapping({"/name"})
-    public String showMoviesHome(Model model, @RequestParam (required = false) String name) {
-        List<Movie> movies = service.queryMoviesByName(name);
+    @GetMapping({"/filter"})
+    public String showMoviesByNameAndGenre(Model model,
+                                           @RequestParam(required = false) String name,
+                                           @RequestParam(required = false) String genre) {
+        List<Movie> movies;
+        if (name != null && genre != null) {
+            movies = service.queryMoviesByNameAndGenre(name, genre);
+        } else if (name != null) {
+            movies = service.queryMoviesByName(name);
+        } else if (genre != null) {
+            movies = service.queryMoviesByGenre(genre);
+        } else {
+            movies = service.queryMovies();
+        }
         model.addAttribute("movies", movies);
         return "movies";
     }
 
     @GetMapping("/watchLater")
     public String showMoviesWatchLater(Model model) {
-        List<Movie> movies = service.queryMovies();
-        model.addAttribute("movies", movies);
-        return "watchLater";
+        List<Movie> watchLaterMovies = movieService.getWatchlist();
+        if (watchLaterMovies != null) {
+            System.out.println("Watch Later Movies: " + watchLaterMovies.size());
+        } else {
+            System.out.println("No movies found in the watch later list.");
+        }
+        model.addAttribute("watchLaterMovies", watchLaterMovies);
+        return "watchLater.html";
     }
 
     @GetMapping("/alreadyWatched")
     public String showMoviesWatchedAlready(Model model) {
-        List<Movie> movies = service.queryMovies();
-        model.addAttribute("movies", movies);
-        return "alreadyWatched";
+        List<Movie> alreadyWatchedMovies = movieService.getAlreadyWatched();
+        model.addAttribute("alreadyWatchedMovies", alreadyWatchedMovies);
+        return "alreadyWatched.html";
     }
 
     @GetMapping("/favourites")
     public String showMoviesFavourites(Model model) {
-        List<Movie> movies = service.queryMovies();
-        model.addAttribute("movies", movies);
-        return "favourites";
+        List<Movie> favouriteMovies = movieService.getFavorites();
+        model.addAttribute("favouriteMovies", favouriteMovies);
+        return "favourites.html";
     }
 
     @PostMapping("/add")
-    public String addMovie(@ModelAttribute Movie movie) {
+    public String addMovie(@ModelAttribute Movie movie, Model model) {
         movieService.addMovie(movie);
+        List<Movie> movies = movieService.getAllMovies();
+        model.addAttribute("movies", movies);
         return "redirect:/movies";
     }
 
     @PostMapping("/watchlist/add")
-    public String addToWatchlist(@ModelAttribute Movie movie) {
-        movieService.addToWatchlist(movie);
-        return "redirect:/movies/watchlist";
+    public String addToWatchlist(@RequestParam Long id, Model model) {
+        Movie movie = movieService.findById(id);
+        if (movie != null) {
+            System.out.println("Adding to watchlist: " + movie.getName());
+            movieService.addToWatchlist(movie);
+        } else {
+            System.out.println("Movie not found for ID: " + id);
+        }
+        return "redirect:/movies";
     }
 
     @PostMapping("/watched/add")
-    public String markAsWatched(@ModelAttribute Movie movie) {
-        movieService.markAsWatched(movie);
-        return "redirect:/movies/watched";
+    public String markAsWatched(@RequestParam Long id) {
+        Movie movie = movieService.findById(id);
+        if (movie != null) {
+            movieService.markAsWatched(movie);
+        }
+        return "redirect:/movies/alreadyWatched";
     }
 
     @PostMapping("/favorites/add")
-    public String addToFavorites(@ModelAttribute Movie movie) {
-        movieService.addToFavorites(movie);
-        return "redirect:/movies/favorites";
+    public String addToFavorites(@RequestParam Long id) {
+        Movie movie = movieService.findById(id);
+        if (movie != null) {
+            movieService.addToFavorites(movie);
+        }
+        return "redirect:/movies/favourites";
     }
-
-//    @GetMapping("/watchlist")
-//    public String getWatchlist(Model model) {
-//        List<Movie> watchlist = movieService.getWatchlist();
-//        model.addAttribute("watchlist", watchlist);
-//        return "watchlist";
-//    }
-//
-//    @GetMapping("/watched")
-//    public String getAlreadyWatched(Model model) {
-//        List<Movie> watchedMovies = movieService.getAlreadyWatched();
-//        model.addAttribute("watchedMovies", watchedMovies);
-//        return "watched";
-//    }
-//
-//    @GetMapping("/favorites")
-//    public String getFavorites(Model model) {
-//        List<Movie> favorites = movieService.getFavorites();
-//        model.addAttribute("favorites", favorites);
-//        return "favorites";
-//    }
 }

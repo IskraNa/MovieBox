@@ -14,4 +14,5 @@ public interface MovieService {
     List getAlreadyWatched();
     List getFavorites();
     List<Movie> getAllMovies();
+    Movie findById(Long id);
 }
